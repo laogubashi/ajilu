@@ -24,7 +24,7 @@
 <body>
 <nav class="navbar navbar-default navbar-inverse" role="navigation">
 				<div class="navbar-header">
-					 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"> <span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button> <a class="navbar-brand" href="#">选课宝</a>
+					 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"> <span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button> <a class="navbar-brand" href="index.html">选课宝</a>
 	</div>
 	
 	<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -51,14 +51,15 @@
 	<div class="row clearfix">
 		<div class="col-md-12 column">
 			<div class="row clearfix jumbotron well">
-				<div class="col-md-1 column">
-				</div>
-				<div class="col-md-6 column">
-				</div>
-				<div class="col-md-1 column">
-				</div>
-				<div class="col-md-3 column">
-				</div>
+			    <h2>
+				热门老师
+			</h2>
+			<p>
+				
+			</p>
+			<p>
+				<a class="button" href="#">查看更多 »</a>
+			</p>
 			</div>
 		</div>
 	</div>
@@ -72,7 +73,7 @@ if (user) {
     username = user.get('username');
     $('.nav-user').append(
         '<li><a href="login.html">'+username+'</a></li>' +
-        '<li><a class="btn-logout">退出</a></li>'
+        '<li><a class="btn-logout" href="">退出</a></li>'
     )
     $('.btn-logout').on('click', function(){
         AV.User.logOut();

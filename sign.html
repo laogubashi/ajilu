@@ -34,12 +34,12 @@ if (currentUser) {
 
 <nav class="navbar navbar-default navbar-inverse" role="navigation">
 				<div class="navbar-header">
-					 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"> <span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button> <a class="navbar-brand" href="#">选课宝</a>
+					 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"> <span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button> <a class="navbar-brand" href="index.html">选课宝</a>
 	</div>
 	
 	<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 		<ul class="nav navbar-nav">
-			<li class="active">
+			<li>
 				<a href="#">微薄</a>
 			</li>
 			<li>
@@ -73,37 +73,37 @@ if (currentUser) {
 					    <div class="form-group">
 							 <label for="inputName" class="col-sm-2 control-label">用户名</label>
 							<div class="col-sm-10">
-								<input type="text" class="form-control" id="inputName" />
+								<input type="text" class="form-control" id="inputName" required="required" />
 							</div>
 						</div>
 						<div class="form-group">
 							<label for="inputPassword" class="col-sm-2 control-label">密码</label>
 							<div class="col-sm-10">
-								<input type="password" class="form-control" id="inputPassword" />
+								<input type="password" class="form-control" id="inputPassword" required="required" />
 							</div>
 						</div>
 						<div class="form-group">
 							<label for="inputrePassword" class="col-sm-2 control-label">确认密码</label>
 							<div class="col-sm-10">
-								<input type="password" class="form-control" id="inputrePassword" />
+								<input type="password" class="form-control" id="inputrePassword" required="required" />
 							</div>
 						</div>
 						<div class="form-group">
 							 <label for="inputEmail" class="col-sm-2 control-label">邮箱</label>
 							<div class="col-sm-10">
-								<input type="text" class="form-control" id="inputEmail" />
+								<input type="text" class="form-control" id="inputEmail" required="required" />
 							</div>
 						</div>
 						<div class="form-group">
 							 <label for="inputSchool" class="col-sm-2 control-label">所在学校</label>
 							<div class="col-sm-10">
-								<input type="text" class="form-control" id="inputSchool" />
+								<input type="text" class="form-control" id="inputSchool" required="required" />
 							</div>
 						</div>
 						<div class="form-group">
 							 <label for="inputMajor" class="col-sm-2 control-label">专业</label>
 							<div class="col-sm-10">
-								<input type="text" class="form-control" id="Major" />
+								<input type="text" class="form-control" id="inputMajor" />
 							</div>
 						</div>
 						<div class="form-group">
@@ -132,20 +132,27 @@ if (currentUser) {
 	</div>
 </div>
 <script>
-$('.btn-login').on('click', function(){
-    var email = $('#inputEmail').val(),
-        pswd  = $('#inputPassword').val();
+$('.btn-sign').on('click', function(){
+    var username = $('#inputName').val()
+        email    = $('#inputEmail').val(),
+        pswd     = $('#inputPassword').val(),
+        school   = $('#inputSchool').val(),
+        major    = $('#inputMajor').val(),
+        sex      = $('input[name="sex"]:checked').val();
     var user = new AV.User();
-    user.set("username", "my name");
-    user.set("password", "my pass");
-    user.set("email", "email@example.com");
+    user.set("username", username);
+    user.set("password", pswd);
+    user.set("email", email);
 
     // other fields can be set just like with AV.Object
-    user.set("phone", "415-392-0202");
+    user.set("school", school);
+    user.set("major", major);
+    user.set("sex", sex);
 
     user.signUp(null, {
         success: function(user) {
             alert('注册成功')
+            window.location.href = 'index.html'
         },
         error: function(user, error) {
             alert('注册失败')
