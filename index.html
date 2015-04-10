@@ -29,7 +29,7 @@
 	
 	<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 		<ul class="nav navbar-nav">
-			<li class="active">
+			<li>
 				<a href="#">微薄</a>
 			</li>
 			<li>
@@ -41,17 +41,12 @@
 				<input type="text" class="form-control" />
 			</div> <button type="submit" class="btn btn-primary">搜索</button>
 		</form>
-		<ul class="nav navbar-nav navbar-right">
-			<li>
-				<a href="login.html">登录</a>
-			</li>
-			<li>
-			    <a href="sign.html">注册</a>
-			</li>
+		<ul class="nav navbar-nav navbar-right nav-user">
 		</ul>
 	</div>
 	
 </nav>
+
 <div class="container">
 	<div class="row clearfix">
 		<div class="col-md-12 column">
@@ -59,44 +54,10 @@
 				<div class="col-md-1 column">
 				</div>
 				<div class="col-md-6 column">
-					<form class="form-horizontal" role="form">
-						<div class="form-group">
-							 <label for="inputEmail" class="col-sm-2 control-label">帐号</label>
-							<div class="col-sm-10">
-								<input type="text" class="form-control" id="inputEmail" />
-							</div>
-						</div>
-						<div class="form-group">
-							<label for="inputPassword" class="col-sm-2 control-label">密码</label>
-							<div class="col-sm-10">
-								<input type="password" class="form-control" id="inputPassword" />
-							</div>
-						</div>
-						<div class="form-group">
-							<div class="col-sm-offset-2 col-sm-10">
-								<div class="checkbox">
-									 <label><input type="checkbox" /> 记住帐号</label>
-								</div>
-							</div>
-						</div>
-					</form>
-				    <div class="form-group">
-						<div class="col-sm-offset-2 col-sm-10">
-							 <button class="btn btn-primary btn-login">登录</button>
-						</div>
-					</div>
 				</div>
 				<div class="col-md-1 column">
 				</div>
 				<div class="col-md-3 column">
-					<div>
-						<p>
-							还没有帐号
-						</p>
-						<p>
-							<a class="btn btn-primary btn-large" href="sign.html">立即注册</a>
-						</p>
-					</div>
 				</div>
 			</div>
 		</div>
@@ -106,25 +67,25 @@
 <script>
 AV.initialize("pub2v4infix64qnlj2lp31ki8f5uot9os4bfx0iw7llaaq2g", "cd1sx70ev9f7w9idya8kjpa8516qkq3a4fvo1s2hna9codrc");
 
-var currentUser = AV.User.current();
-if (currentUser) {
-    window.location.href = 'index.html'
+var user = AV.User.current();
+if (user) {
+    username = user.get('username');
+    $('.nav-user').append(
+        '<li><a href="login.html">'+username+'</a></li>' +
+        '<li><a class="btn-logout">退出</a></li>'
+    )
+    $('.btn-logout').on('click', function(){
+        AV.User.logOut();
+        window.location.href = 'index.html'
+    })
+} else {
+    $('.nav-user').append(
+        '<li><a href="login.html">登录</a></li>' +
+        '<li><a href="sign.html">注册</a></li>'
+    )
 }
 
-$('.btn-login').on('click', function(){
-    var email = $('#inputEmail').val(),
-        pswd  = $('#inputPassword').val();
-    AV.User.logIn(email, pswd, {
-    success: function(user) {
-        alert('登录成功')
-        window.location.href = 'index.html'
-    },
-    error: function(user, error) {
-        alert('用户名或密码错误')
-        console.log(error)
-    }
-    });
-})
+
 </script>
 </body>
 </html>
