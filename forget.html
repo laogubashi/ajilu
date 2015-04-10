@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>登录</title>
+<title>忘记密码</title>
 
 <!-- Bootstrap -->
 <link rel="stylesheet" href="./css/bootstrap.min.css">
@@ -31,6 +31,7 @@ if (currentUser) {
     window.location.href = 'index.html'
 }
 </script>
+
 <nav class="navbar navbar-default navbar-inverse" role="navigation">
 				<div class="navbar-header">
 					 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"> <span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button> <a class="navbar-brand" href="index.html">选课宝</a>
@@ -67,64 +68,37 @@ if (currentUser) {
 			<div class="row clearfix jumbotron well">
 				<div class="col-md-1 column">
 				</div>
-				<div class="col-md-6 column">
+				<div class="col-md-10 column">
 					<form class="form-horizontal" role="form">
-						<div class="form-group">
-							 <label for="inputEmail" class="col-sm-2 control-label">帐号</label>
+					    <div class="form-group">
+							 <label for="inputName" class="col-sm-2 control-label">邮箱地址</label>
 							<div class="col-sm-10">
-								<input type="text" class="form-control" id="inputEmail" />
-							</div>
-						</div>
-						<div class="form-group">
-							<label for="inputPassword" class="col-sm-2 control-label">密码</label>
-							<div class="col-sm-10">
-								<input type="password" class="form-control" id="inputPassword" />
-							</div>
-						</div>
-						<div class="form-group">
-							<div class="col-sm-offset-2 col-sm-10">
-								<div class="checkbox">
-									 <label><input type="checkbox" /> 记住帐号</label>
-								</div>
+								<input type="email" class="form-control" id="inputName" required="required" />
 							</div>
 						</div>
 					</form>
 				    <div class="form-group">
 						<div class="col-sm-offset-2 col-sm-10">
-							 <button class="btn btn-primary btn-login">登录</button>
-							 <a class="btn btn-link" href="forget.html">忘记密码</a>
+							 <button class="btn btn-primary btn-sign">提交</button>
 						</div>
-					</div>
-				</div>
-				<div class="col-md-1 column">
-				</div>
-				<div class="col-md-3 column">
-					<div>
-						<p>
-							还没有帐号
-						</p>
-						<p>
-							<a class="btn btn-primary btn-large" href="sign.html">立即注册</a>
-						</p>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
 </div>
-
 <script>
-$('.btn-login').on('click', function(){
-    var email = $('#inputEmail').val(),
-        pswd  = $('#inputPassword').val();
-    AV.User.logIn(email, pswd, {
-    success: function(user) {
-        alert('登录成功')
-        window.location.href = 'index.html'
+$('.btn-sign').on('click', function(){
+    var username = $('#inputName').val();
+    AV.User.requestPasswordReset(username, {
+    success: function() {
+        window.location.href = 'open_email.html?email=' + username
+        // Password reset request was sent successfully
     },
-    error: function(user, error) {
-        alert('用户名或密码错误')
-        console.log(error)
+    error: function(error) {
+        // Show the error message somewhere
+        alert('用户名不存在或该用户没激活邮箱')
+        console.log("Error: " + error.code + " " + error.message);
     }
     });
 })

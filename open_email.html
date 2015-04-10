@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>查收邮件</title>
+
+<!-- Bootstrap -->
+<link rel="stylesheet" href="./css/bootstrap.min.css">
+
+<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+<script src="http://cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+<script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+
+<!-- leancloud -->
+<script src="http://cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script>
+
+</head>
+<body>
+
+<nav class="navbar navbar-default navbar-inverse" role="navigation">
+				<div class="navbar-header">
+					 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"> <span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button> <a class="navbar-brand" href="index.html">选课宝</a>
+	</div>
+	
+	<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+		<ul class="nav navbar-nav">
+			<li>
+				<a href="#">微薄</a>
+			</li>
+			<li>
+				<a href="#">微信</a>
+			</li>
+		</ul>
+		<form class="navbar-form navbar-left" role="search">
+			<div class="form-group">
+				<input type="text" class="form-control" />
+			</div> <button type="submit" class="btn btn-primary">搜索</button>
+		</form>
+		<ul class="nav navbar-nav navbar-right">
+			<li>
+				<a href="login.html">登录</a>
+			</li>
+			<li>
+			    <a href="sign.html">注册</a>
+			</li>
+		</ul>
+	</div>
+	
+</nav>
+<div class="container">
+	<div class="row clearfix">
+		<div class="col-md-12 column">
+			<div class="row clearfix jumbotron well">
+			    <p>
+				    邮件已发送到您的邮箱,请注意查收
+			    </p>
+			<p>
+				<a class="btn btn-primary email-link" target="_blank">打开邮箱</a>
+			</p>
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+function gotoEmail($mail) {
+$t = $mail.split('@')[1];
+$t = $t.toLowerCase();
+if ($t == '163.com') {
+    return 'mail.163.com';
+    } else if ($t == 'vip.163.com') {
+        return 'vip.163.com';
+    } else if ($t == '126.com') {
+        return 'mail.126.com';
+    } else if ($t == 'qq.com' || $t == 'vip.qq.com' || $t == 'foxmail.com') {
+        return 'mail.qq.com';
+    } else if ($t == 'gmail.com') {
+        return 'mail.google.com';
+    } else if ($t == 'sohu.com') {
+        return 'mail.sohu.com';
+    } else if ($t == 'tom.com') {
+        return 'mail.tom.com';
+    } else if ($t == 'vip.sina.com') {
+        return 'vip.sina.com';
+    } else if ($t == 'sina.com.cn' || $t == 'sina.com') {
+        return 'mail.sina.com.cn';
+    } else if ($t == 'tom.com') {
+        return 'mail.tom.com';
+    } else if ($t == 'yahoo.com.cn' || $t == 'yahoo.cn') {
+        return 'mail.cn.yahoo.com';
+    } else if ($t == 'tom.com') {
+        return 'mail.tom.com';
+    } else if ($t == 'yeah.net') {
+        return 'www.yeah.net';
+    } else if ($t == '21cn.com') {
+        return 'mail.21cn.com';
+    } else if ($t == 'hotmail.com') {
+        return 'www.hotmail.com';
+    } else if ($t == 'sogou.com') {
+        return 'mail.sogou.com';
+    } else if ($t == '188.com') {
+        return 'www.188.com';
+    } else if ($t == '139.com') {
+        return 'mail.10086.cn';
+    } else if ($t == '189.cn') {
+        return 'webmail15.189.cn/webmail';
+    } else if ($t == 'wo.com.cn') {
+        return 'mail.wo.com.cn/smsmail';
+    } else if ($t == '139.com') {
+        return 'mail.10086.cn';
+    } else {
+        return '';
+    }
+};
+
+function GetQueryString(name)
+{
+     var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+     var r = window.location.search.substr(1).match(reg);
+     if(r!=null)return  unescape(r[2]); return null;
+}
+var mailHost = gotoEmail(GetQueryString('email'))
+$('.email-link').attr('href', 'http://' + mailHost)
+</script>
+</body>
+</html>

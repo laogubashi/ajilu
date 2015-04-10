@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>登录</title>
+<title>修改个人信息</title>
 
 <!-- Bootstrap -->
 <link rel="stylesheet" href="./css/bootstrap.min.css">
@@ -23,14 +23,6 @@
 </head>
 <body>
 
-<script>
-AV.initialize("pub2v4infix64qnlj2lp31ki8f5uot9os4bfx0iw7llaaq2g", "cd1sx70ev9f7w9idya8kjpa8516qkq3a4fvo1s2hna9codrc");
-
-var currentUser = AV.User.current();
-if (currentUser) {
-    window.location.href = 'index.html'
-}
-</script>
 <nav class="navbar navbar-default navbar-inverse" role="navigation">
 				<div class="navbar-header">
 					 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"> <span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button> <a class="navbar-brand" href="index.html">选课宝</a>
@@ -50,13 +42,7 @@ if (currentUser) {
 				<input type="text" class="form-control" />
 			</div> <button type="submit" class="btn btn-primary">搜索</button>
 		</form>
-		<ul class="nav navbar-nav navbar-right">
-			<li>
-				<a href="login.html">登录</a>
-			</li>
-			<li>
-			    <a href="sign.html">注册</a>
-			</li>
+		<ul class="nav navbar-nav navbar-right nav-user">
 		</ul>
 	</div>
 	
@@ -67,65 +53,81 @@ if (currentUser) {
 			<div class="row clearfix jumbotron well">
 				<div class="col-md-1 column">
 				</div>
-				<div class="col-md-6 column">
+				<div class="col-md-10 column">
 					<form class="form-horizontal" role="form">
 						<div class="form-group">
-							 <label for="inputEmail" class="col-sm-2 control-label">帐号</label>
+							 <label for="inputSchool" class="col-sm-2 control-label">所在学校</label>
 							<div class="col-sm-10">
-								<input type="text" class="form-control" id="inputEmail" />
+								<input type="text" class="form-control" id="inputSchool" required="required" />
 							</div>
 						</div>
 						<div class="form-group">
-							<label for="inputPassword" class="col-sm-2 control-label">密码</label>
+							 <label for="inputMajor" class="col-sm-2 control-label">专业</label>
 							<div class="col-sm-10">
-								<input type="password" class="form-control" id="inputPassword" />
+								<input type="text" class="form-control" id="inputMajor" />
 							</div>
 						</div>
 						<div class="form-group">
-							<div class="col-sm-offset-2 col-sm-10">
-								<div class="checkbox">
-									 <label><input type="checkbox" /> 记住帐号</label>
-								</div>
+						    <label for="inputSex" class="col-sm-2 control-label">性别</label>
+							<div class="col-sm-10">
+								<label class="control-label"><input name="sex" type="radio" value="male" /> 男
+									 <input name="sex" type="radio" value="female" /> 女</label>
 							</div>
 						</div>
 					</form>
 				    <div class="form-group">
 						<div class="col-sm-offset-2 col-sm-10">
-							 <button class="btn btn-primary btn-login">登录</button>
-							 <a class="btn btn-link" href="forget.html">忘记密码</a>
+							 <button class="btn btn-primary btn-sign">修改</button>
 						</div>
-					</div>
-				</div>
-				<div class="col-md-1 column">
-				</div>
-				<div class="col-md-3 column">
-					<div>
-						<p>
-							还没有帐号
-						</p>
-						<p>
-							<a class="btn btn-primary btn-large" href="sign.html">立即注册</a>
-						</p>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
 </div>
-
 <script>
-$('.btn-login').on('click', function(){
-    var email = $('#inputEmail').val(),
-        pswd  = $('#inputPassword').val();
-    AV.User.logIn(email, pswd, {
-    success: function(user) {
-        alert('登录成功')
+AV.initialize("pub2v4infix64qnlj2lp31ki8f5uot9os4bfx0iw7llaaq2g", "cd1sx70ev9f7w9idya8kjpa8516qkq3a4fvo1s2hna9codrc");
+
+var user = AV.User.current();
+if (user) {
+    var username = user.get('username'),
+        school = user.get('school'),
+        major = user.get('major'),
+        sex = user.get('sex');
+    $('.nav-user').append(
+        '<li><a href="user.html">'+username+'</a></li>' +
+        '<li><a class="btn-logout" href="">退出</a></li>'
+    )
+    $('.btn-logout').on('click', function(){
+        AV.User.logOut();
         window.location.href = 'index.html'
-    },
-    error: function(user, error) {
-        alert('用户名或密码错误')
-        console.log(error)
-    }
+    });
+    $('#inputSchool').val(school);
+    $('#inputMajor').val(major);
+    $('input[value="'+sex+'"]').attr('checked','checked');
+} else {
+    window.location.href = 'login.html'
+}
+
+$('.btn-sign').on('click', function(){
+    var school   = $('#inputSchool').val(),
+        major    = $('#inputMajor').val(),
+        sex      = $('input[name="sex"]:checked').val();
+
+    // other fields can be set just like with AV.Object
+    user.set("school", school);
+    user.set("major", major);
+    user.set("sex", sex);
+
+    user.save(null, {
+        success: function(user) {
+            alert('修改成功')
+            window.location.href = 'change_user_info.html'
+        },
+        error: function(user, error) {
+            alert('修改失败')
+            console.log("Error: " + error.code + " " + error.message);
+        }
     });
 })
 </script>
