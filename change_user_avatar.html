@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>用户中心</title>
+<title>修改个人头像</title>
 
 <!-- Bootstrap -->
 <link rel="stylesheet" href="./css/bootstrap.min.css">
@@ -20,6 +20,12 @@
 <script src="http://cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script>
 <script src="https://leancloud.cn/scripts/lib/av-0.5.1.min.js"></script>
 
+<style>
+#user-avatar {
+    width: 220px;
+    height: 220px;
+}
+</style>
 </head>
 <body>
 
@@ -30,7 +36,7 @@
 	
 	<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 		<ul class="nav navbar-nav">
-            <li>
+			<li>
 				<a href="http://weibo.com/u/5507839279" target="_blank">微薄</a>
 			</li>
 		</ul>
@@ -48,15 +54,30 @@
 	<div class="row clearfix">
 		<div class="col-md-12 column">
 			<div class="row clearfix jumbotron well">
-			<p>
-				<a class="button" href="change_user_avatar.html">修改头像 »</a>
-			</p>
-			<p>
-				<a class="button" href="change_user_info.html">修改个人信息 »</a>
-			</p>
-			<p>
-				<a class="button" href="change_pswd.html">修改密码 »</a>
-			</p>
+			    <div>
+			        <ul class="breadcrumb">
+                        <li><a href="user.html">用户中心</a></li>
+                        <li class="active">修改个人头像</li>
+                    </ul>
+                </div>
+				<div class="col-md-1 column">
+				</div>
+				<div class="col-md-10 column">
+					<div>
+					    <div>
+					        <img id="user-avatar" class="img-thumbnail"></img>
+					    </div>
+					    <div>
+					    <input type="file" id="profilePhotoFileUpload">
+					    </div>
+					</div>
+				    <div class="form-group">
+						<div class="col-sm-offset-2 col-sm-10">
+							 <button class="btn btn-primary change-avatar">上传</button>
+							 <a class="btn btn-primary" href="user.html">返回</a>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -64,12 +85,13 @@
 <script>
 AV.initialize("pub2v4infix64qnlj2lp31ki8f5uot9os4bfx0iw7llaaq2g", "cd1sx70ev9f7w9idya8kjpa8516qkq3a4fvo1s2hna9codrc");
 
-var user = AV.User.current();
+var user = AV.User.current(), avFile = null;
 if (user) {
     var username = user.get('username'),
         school = user.get('school'),
         major = user.get('major'),
-        sex = user.get('sex');
+        sex = user.get('sex'),
+        avatar = user.get('avatar');
     $('.nav-user').append(
         '<li><a href="user.html">'+username+'</a></li>' +
         '<li><a class="btn-logout" href="">退出</a></li>'
@@ -81,9 +103,51 @@ if (user) {
     $('#inputSchool').val(school);
     $('#inputMajor').val(major);
     $('input[value="'+sex+'"]').attr('checked','checked');
+    if (avatar) {
+        $('#user-avatar').attr('src', avatar.url())
+    }
+    else {
+        $('#user-avatar').attr('src', 'images/avatar.jpg')
+    };
 } else {
     window.location.href = 'login.html'
 }
+$("#profilePhotoFileUpload").on('change', function(e){
+    var file = e.target.files[0];
+    var reader = new FileReader();  
+    reader.onload = function(e){
+    //displayImage($('bd'),e.target.result);
+    //alert('load');
+        $("#user-avatar").attr('src', e.target.result);
+    }
+    reader.readAsDataURL(file);
+})
+
+$('.change-avatar').on('click', function(){
+    var fileUploadControl = $("#profilePhotoFileUpload")[0];
+    if (fileUploadControl.files.length > 0) {
+        var file = fileUploadControl.files[0];
+        var name = fileUploadControl.files[0].name;
+
+        avFile = new AV.File(name, file);
+        avFile.save().then(function() {
+            user.set("avatar", avFile);
+            user.save(null, {
+                success: function(user) {
+                    alert('修改成功');
+                },
+                error: function(user, error) {
+                    alert('修改失败')
+                    console.log("Error: " + error.code + " " + error.message);
+                }
+            });
+            // The file has been saved to AV.
+        }, function(error) {
+            alert('图片上传失败')
+            // The file either could not be read, or could not be saved to AV.
+        });
+    }
+});
 </script>
 </body>
 </html>
